@@ -1,4 +1,5 @@
-{-# Language GADTs, DataKinds, KindSignatures, ExistentialQuantification, StandaloneDeriving #-}
+{-# Language GADTs #-}
+-- {-# Language GADTs, DataKinds, KindSignatures, ExistentialQuantification, StandaloneDeriving #-}
 module Types where
 
 import Text.Parsec (ParsecT)
