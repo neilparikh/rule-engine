@@ -1,5 +1,5 @@
 module ParseUtils where
-import Text.Parsec hiding (runParser)
+import Text.Parsec (string, char, spaces)
 import Types
 
 constString :: String -> a -> Parser a
