@@ -1,15 +1,12 @@
 module Parser where
-import Text.Parsec hiding (runParser)
+import Text.Parsec
 
 import Types
 import ParseUtils
 -- util functions
 
 p :: Parser a -> String -> a
-p = curry $ resolveError . uncurry runParser
-
-runParser :: Parser a -> String -> Either ParseError a
-runParser parser = parse parser "(source)"
+p = curry $ resolveError . uncurry (\parser -> runParser parser () "")
 
 resolveError :: Either ParseError a -> a
 resolveError = either (error . show) id

@@ -2,10 +2,9 @@
 -- {-# Language GADTs, DataKinds, KindSignatures, ExistentialQuantification, StandaloneDeriving #-}
 module Types where
 
-import Text.Parsec (ParsecT)
-import Control.Monad.Identity
+import Text.Parsec (Parsec)
 
-type Parser a = ParsecT String () Identity a
+type Parser a = Parsec String () a
 
 -- data Rule = forall a. Rule (Condition a) Action
 -- deriving instance Show Rule
