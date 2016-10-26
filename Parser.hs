@@ -56,8 +56,8 @@ predicateParser =     constString "==" Eq
                   <|> constString "!=" NotEq
 
 exprParser :: Parser Expr
-exprParser =     (many1 digit >>= return . Val . read)
-             <|> (many1 letter >>= return . Var)
+exprParser =     fmap (Val . read) (many1 digit)
+             <|> fmap Var (many1 letter)
 
 conjunctionParser :: Parser Conjunction
 conjunctionParser =     constString "and" And
