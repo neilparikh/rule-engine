@@ -1,27 +1,36 @@
+{-# Language GADTs, DataKinds, KindSignatures, ExistentialQuantification, StandaloneDeriving #-}
 module Types where
+
 import Text.Parsec (ParsecT)
 import Control.Monad.Identity
 
 type Parser a = ParsecT String () Identity a
 
-data Cond = Mult Compound Cond Cond
-          | Cmp Pred Expr Expr
-          deriving Show
+-- data Rule = forall a. Rule (Condition a) Action
+-- deriving instance Show Rule
+-- data ConditionType = Comp | Cmp deriving Show
+-- data Condition (a :: ConditionType) where
+--     Compound :: Conjunction -> Condition a -> Condition b -> Condition 'Comp
+--     Compare  :: Predicate -> Expr -> Expr -> Condition 'Cmp
+-- deriving instance Show (Condition (a :: ConditionType))
 
-data Pred = Eq
-          | NotEq
-          deriving Show
+data Rule = Rule Condition  Action deriving Show
 
-data Compound = And
-              | Or
+type Action = String
+
+data Condition where
+    Compound :: Conjunction -> Condition -> Condition -> Condition
+    Compare  :: Predicate -> Expr -> Expr -> Condition
+    deriving Show
+
+data Predicate = Eq
+               | NotEq
+               deriving Show
+
+data Conjunction = And
+                 | Or
               deriving Show
 
 data Expr = Var String
           | Val Int
           deriving Show
-
-type Action = String
-
-data Rule = Rule Cond Action
-          deriving Show
-

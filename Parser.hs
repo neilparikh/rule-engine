@@ -2,6 +2,7 @@ module Parser where
 import Text.Parsec hiding (runParser)
 
 import Types
+import ParseUtils
 -- util functions
 
 p :: Parser a -> String -> a
@@ -22,54 +23,42 @@ ruleParser = do
     spaces
     string "if"
     spaces
-    cond <- condParser
-    return $ Rule cond action
+    condition <- conditionParser
+    return $ Rule condition action
 
 actionParser :: Parser String
 actionParser = many1 letter
 
-condParser :: Parser Cond
-condParser =     try multParser
-             <|> cmpParser
+conditionParser :: Parser Condition
+conditionParser =     try compoundParser
+                  <|> compareParser
 
-cmpParser :: Parser Cond
-cmpParser = do
+compoundParser :: Parser Condition
+compoundParser = do
+    e1 <- parens conditionParser
+    spaces
+    conjunction <- conjunctionParser
+    spaces
+    e2 <- parens conditionParser
+    return $ Compound conjunction e1 e2
+
+compareParser :: Parser Condition
+compareParser = do
     e1 <- exprParser
     spaces
-    pred <- predParser
+    predicate <- predicateParser
     spaces
     e2 <- exprParser
-    return $ Cmp pred e1 e2
+    return $ Compare predicate e1 e2
 
-parens :: Parser a -> Parser a
-parens subParser = do
-    char '('
-    spaces
-    a <- subParser
-    spaces
-    char ')'
-    return a
-
-compoundParser :: Parser Compound
-compoundParser =     constString "and" And
-                 <|> constString "or" Or
-
-multParser :: Parser Cond
-multParser = do
-    e1 <- parens cmpParser
-    spaces
-    compound <- compoundParser
-    spaces
-    e2 <- parens cmpParser
-    return $ Mult compound e1 e2
-
-constString :: String -> a -> Parser a
-constString s f = string s >> return f
-
-predParser :: Parser Pred
-predParser =     constString "==" Eq
-             <|> constString "!=" NotEq
+predicateParser :: Parser Predicate
+predicateParser =     constString "==" Eq
+                  <|> constString "!=" NotEq
 
 exprParser :: Parser Expr
 exprParser =     (many1 digit >>= return . Val . read)
              <|> (many1 letter >>= return . Var)
+
+conjunctionParser :: Parser Conjunction
+conjunctionParser =     constString "and" And
+                    <|> constString "or" Or
