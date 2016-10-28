@@ -3,15 +3,6 @@ import Text.Parsec
 
 import Types
 import ParseUtils
--- util functions
-
-p :: Parser a -> String -> a
-p = curry $ resolveError . uncurry (\parser -> runParser parser () "")
-
-resolveError :: Either ParseError a -> a
-resolveError = either (error . show) id
-
--- parsers
 
 -- parses <action> if <rule>
 ruleParser :: Parser Rule
@@ -30,6 +21,7 @@ conditionParser :: Parser Condition
 conditionParser =     try compoundParser
                   <|> compareParser
 
+-- parses <cond> (or|and) <cond>
 compoundParser :: Parser Condition
 compoundParser = do
     e1 <- parens conditionParser
@@ -39,6 +31,7 @@ compoundParser = do
     e2 <- parens conditionParser
     return $ Compound conjunction e1 e2
 
+-- parses <expr> (==|!=) <expr>
 compareParser :: Parser Condition
 compareParser = do
     e1 <- exprParser

@@ -1,7 +1,8 @@
 module Main where
-import Parser (p, ruleParser)
+import Parser (ruleParser)
+import ParseUtils (applyParser)
 
 main :: IO ()
 main = do
     input <- getLine
-    print $ p ruleParser input
+    print $ applyParser ruleParser input

@@ -1,1 +1,1 @@
-block if (1 == 2) or (2 != 3)
+block if ((1 == 2) or (2 != 3)) and (a == 2)
