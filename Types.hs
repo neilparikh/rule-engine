@@ -14,7 +14,7 @@ type Parser a = Parsec String () a
 --     Compare  :: Predicate -> Expr -> Expr -> Condition 'Cmp
 -- deriving instance Show (Condition (a :: ConditionType))
 
-data Rule = Rule Condition  Action deriving Show
+data Rule = Rule Condition Action deriving Show
 
 type Action = String
 
