@@ -1,6 +1,6 @@
 module ParseUtils where
 import Text.Parsec (string, char, spaces)
-import Types
+import Types (Parser)
 
 constString :: String -> a -> Parser a
 constString s f = string s >> return f

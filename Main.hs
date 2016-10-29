@@ -5,7 +5,7 @@ import Validate
 main :: IO ()
 main = do
     input <- getLine
-    case (parseRule input) of
+    case parseRule input of
         Right rule -> do
             print rule
             print $ validateRule ["Show", "Hide"] ["age", "name", "count"] rule
