@@ -1,4 +1,3 @@
-{-# Language GADTs #-}
 -- {-# Language GADTs, DataKinds, KindSignatures, ExistentialQuantification, StandaloneDeriving #-}
 module Types where
 
@@ -18,10 +17,9 @@ data Rule = Rule Condition Action deriving Show
 
 type Action = String
 
-data Condition where
-    Compound :: Conjunction -> Condition -> Condition -> Condition
-    Compare  :: Predicate -> Expr -> Expr -> Condition
-    deriving Show
+data Condition = Compound Conjunction Condition Condition
+               | Compare Predicate Expr Expr
+               deriving Show
 
 data Predicate = Eq
                | NotEq
