@@ -7,4 +7,5 @@ main :: IO ()
 main = do
     input <- getLine
     let rule = applyParser ruleParser input
-    print $ validateRule "Show" ["age", "name", "count"] rule
+    print rule
+    print $ validateRule ["Show", "Hide"] ["age", "name", "count"] rule

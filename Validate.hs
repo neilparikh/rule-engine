@@ -1,10 +1,10 @@
 module Validate where
 import Types
 
-validateRule :: Action -> [String] -> Rule -> Bool
-validateRule action vars (Rule c a) = actionValid && validateCondition vars c
+validateRule :: [Action] -> [String] -> Rule -> Bool
+validateRule actions vars (Rule c a) = actionValid && validateCondition vars c
     where
-    actionValid = action == a
+    actionValid = a `elem` actions
 
 validateCondition :: [String] -> Condition -> Bool
 validateCondition validVars (Compare _ e1 e2) = isExprValid e1 && isExprValid e2
