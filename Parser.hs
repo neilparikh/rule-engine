@@ -4,6 +4,12 @@ import Text.Parsec
 import Types
 import ParseUtils
 
+parseRule :: String -> Either ParseError Rule
+parseRule = applyParser ruleParser
+
+applyParser :: Parser a -> String -> Either ParseError a
+applyParser parser = runParser parser () ""
+
 -- parses <action> if <rule>
 ruleParser :: Parser Rule
 ruleParser = do
