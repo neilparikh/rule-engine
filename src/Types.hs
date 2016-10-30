@@ -31,4 +31,4 @@ data Conjunction = And
 
 data Expr = Var String
           | Val Int
-          deriving Show
+          deriving (Show, Eq)
