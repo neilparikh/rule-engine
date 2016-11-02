@@ -56,9 +56,8 @@ exprParser =     fmap Val intParser
              <|> fmap Var (many1 letter)
 
 intParser :: Parser Int
-intParser =  do
+intParser = do
     negSign <- option ' ' (char '-')
-    spaces
     num <- many1 digit
     return . read $ (negSign:num)
 
