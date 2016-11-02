@@ -10,6 +10,4 @@ main = defaultMainWithOpts
        ] mempty
 
 propCanParseInt :: Int -> Property
-propCanParseInt x = (True) ==> resolveError (applyParser exprParser (show x)) == Val x
-    where
-    resolveError = either (error . show) id
+propCanParseInt x = True ==> applyParser exprParser (show x) == (Right . Val) x
