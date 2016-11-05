@@ -13,22 +13,43 @@ type Parser a = Parsec String () a
 --     Compare  :: Predicate -> Expr -> Expr -> Condition 'Cmp
 -- deriving instance Show (Condition (a :: ConditionType))
 
-data Rule = Rule Condition Action deriving (Show, Eq)
+data Rule = Rule Condition Action deriving Eq
+
+instance Show Rule where
+    show (Rule condition action) = action ++ " if " ++ show condition
 
 type Action = String
 
 data Condition = Compound Conjunction Condition Condition
                | Compare Predicate Expr Expr
-               deriving (Show, Eq)
+               deriving Eq
+
+instance Show Condition where
+    show (Compound conjunction c1 c2) =
+        "(" ++ (show c1) ++ ") " ++ (show conjunction) ++ " (" ++ (show c2) ++ ")"
+    show (Compare predicate e1 e2)    =
+        (show e1) ++ " " ++ (show predicate) ++ " " ++ (show e2)
 
 data Predicate = Eq
                | NotEq
-               deriving (Show, Eq)
+               deriving Eq
+
+instance Show Predicate where
+    show Eq = "=="
+    show NotEq = "!="
 
 data Conjunction = And
                  | Or
-              deriving (Show, Eq)
+                 deriving Eq
+
+instance Show Conjunction where
+    show And = "and"
+    show Or  = "or"
 
 data Expr = Var String
           | Val Int
-          deriving (Show, Eq)
+          deriving Eq
+
+instance Show Expr where
+    show (Var s) = s
+    show (Val i) = show i
