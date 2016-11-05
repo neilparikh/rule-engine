@@ -26,9 +26,9 @@ data Condition = Compound Conjunction Condition Condition
 
 instance Show Condition where
     show (Compound conjunction c1 c2) =
-        "(" ++ (show c1) ++ ") " ++ (show conjunction) ++ " (" ++ (show c2) ++ ")"
+        "(" ++ show c1 ++ ") " ++ show conjunction ++ " (" ++ show c2 ++ ")"
     show (Compare predicate e1 e2)    =
-        (show e1) ++ " " ++ (show predicate) ++ " " ++ (show e2)
+        show e1 ++ " " ++ show predicate ++ " " ++ show e2
 
 data Predicate = Eq
                | NotEq
