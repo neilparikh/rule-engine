@@ -1,30 +1,44 @@
 {-# Language OverloadedStrings #-}
 
+import Data.Either (isRight)
+
 import Test.Framework
 import Test.QuickCheck
 import Test.Framework.Providers.QuickCheck2
-import Test.HUnit
-import Test.Framework.Providers.HUnit
 
-import Parser (applyParser, exprParser, parseRule)
+import Parser (parseRule)
 import Types
+
+-- Arbitrary defs
+
+instance Arbitrary Rule where
+    arbitrary = Rule <$> arbitrary <*> arbitrary
+
+instance Arbitrary Action where
+    arbitrary = Action <$> (listOf1 . choose $ ('A', 'Z'))
+
+instance Arbitrary Condition where
+    arbitrary = oneof [
+        Compound <$> arbitrary <*> arbitrary <*> arbitrary,
+        Compare <$> arbitrary <*> arbitrary <*> arbitrary
+        ]
+
+instance Arbitrary Expr where
+    arbitrary = oneof [
+        Val <$> arbitrary,
+        Var <$> (listOf1 . choose $ ('A', 'Z'))
+        ]
+
+instance Arbitrary Predicate where
+    arbitrary = elements [Eq, NotEq]
+
+instance Arbitrary Conjunction where
+    arbitrary = elements [And, Or]
 
 main :: IO ()
 main = defaultMainWithOpts
-       [ testProperty "canParseInt" propCanParseInt
-       , testCase "parseRule" testParseRule
+       [ testProperty "parseRule" propParseShowRuleEqRule
        ] mempty
 
-propCanParseInt :: Int -> Property
-propCanParseInt x = True ==> applyParser exprParser (show x) == (Right . Val) x
-
-exampleRuleStr :: String
-exampleRuleStr = "Show if ((1 == name) or (count != -3)) and (age == 2)"
-
-exampleRule :: Rule
-exampleRule = Rule (Compound And (Compound Or (Compare Eq (Val 1) (Var "name"))
-                                              (Compare NotEq (Var "count") (Val (-3))))
-                                 (Compare Eq (Var "age") (Val 2))) "Show"
-
-testParseRule :: Assertion
-testParseRule = assertEqual "" (parseRule exampleRuleStr) (Right exampleRule)
+propParseShowRuleEqRule :: Rule -> Property
+propParseShowRuleEqRule rule = property $ (parseRule . show) rule == Right rule
