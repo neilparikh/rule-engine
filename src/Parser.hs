@@ -20,8 +20,8 @@ ruleParser = do
     condition <- conditionParser
     return $ Rule condition action
 
-actionParser :: Parser String
-actionParser = many1 letter
+actionParser :: Parser Action
+actionParser = Action <$> many1 letter
 
 conditionParser :: Parser Condition
 conditionParser =     try compoundParser

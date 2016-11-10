@@ -1,7 +1,9 @@
 -- {-# Language GADTs, DataKinds, KindSignatures, ExistentialQuantification, StandaloneDeriving #-}
+{-# Language GeneralizedNewtypeDeriving #-}
 module Types where
 
 import Text.Parsec (Parsec)
+import Data.String (IsString)
 
 type Parser a = Parsec String () a
 
@@ -16,9 +18,12 @@ type Parser a = Parsec String () a
 data Rule = Rule Condition Action deriving Eq
 
 instance Show Rule where
-    show (Rule condition action) = action ++ " if " ++ show condition
+    show (Rule condition action) = show action ++ " if " ++ show condition
 
-type Action = String
+newtype Action = Action String deriving (IsString, Eq)
+
+instance Show Action where
+    show (Action str) = str
 
 data Condition = Compound Conjunction Condition Condition
                | Compare Predicate Expr Expr

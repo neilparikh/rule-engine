@@ -1,3 +1,5 @@
+{-# Language OverloadedStrings #-}
+
 import Test.Framework
 import Test.QuickCheck
 import Test.Framework.Providers.QuickCheck2

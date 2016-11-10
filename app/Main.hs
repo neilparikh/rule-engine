@@ -1,3 +1,4 @@
+{-# Language OverloadedStrings #-}
 module Main where
 import Parser (parseRule)
 import Validate
