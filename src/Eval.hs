@@ -11,8 +11,8 @@ runRule :: Rule ->
         a -> -- context value
         IO ()
 runRule (Rule condition action) varsMap actionsMap context =
-    case (evalCond condition varsMap) of
-        Just True -> case (M.lookup action actionsMap) of
+    case evalCond condition varsMap of
+        Just True -> case M.lookup action actionsMap of
             Just f -> f context
             Nothing -> error "action not found"
         Just False -> return ()
@@ -27,11 +27,11 @@ conjunctionToFunction And = (&&)
 conjunctionToFunction Or  = (||)
 
 evalCond :: Condition -> M.Map String Int -> Maybe Bool
-evalCond (Compound conj cond1 cond2) varsMap = (liftA2 (conjunctionToFunction conj)) a b
+evalCond (Compound conj cond1 cond2) varsMap = liftA2 (conjunctionToFunction conj) a b
     where
     a = evalCond cond1 varsMap
     b = evalCond cond2 varsMap
-evalCond (Compare pred e1 e2) varsMap = (liftA2 (predicateToFunction pred)) a b
+evalCond (Compare pred e1 e2) varsMap = liftA2 (predicateToFunction pred) a b
     where
     a = evalExpr e1 varsMap
     b = evalExpr e2 varsMap

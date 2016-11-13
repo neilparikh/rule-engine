@@ -25,8 +25,8 @@ main = do
     case parseRule input of
         Right rule -> do
             print rule
-            case (validateRule ["Show", "Hide"] ["age", "foo", "count"] rule) of
-                True -> runRule rule vars actions 1
-                False -> putStrLn "invalid rule"
+            if validateRule ["Show", "Hide"] ["age", "foo", "count"] rule
+                then runRule rule vars actions 1
+                else putStrLn "invalid rule"
 
         Left err -> error . show $ err
