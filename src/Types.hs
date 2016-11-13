@@ -11,7 +11,7 @@ data Rule = Rule Condition Action deriving Eq
 instance Show Rule where
     show (Rule condition action) = show action ++ " if " ++ show condition
 
-newtype Action = Action String deriving (IsString, Eq)
+newtype Action = Action String deriving (IsString, Eq, Ord)
 
 instance Show Action where
     show (Action str) = str

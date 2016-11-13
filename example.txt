@@ -1,1 +1,1 @@
-Show if ((1 == name) or (count != -3)) and (age == 2)
+Hide if ((1 == foo) or (count != -3)) and (age == 2)

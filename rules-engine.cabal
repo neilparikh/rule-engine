@@ -16,8 +16,10 @@ library
   exposed-modules:     Parser
                      , Validate
                      , Types
+                     , Eval
   build-depends:       base >= 4.7 && < 5
                      , parsec
+                     , containers
   default-language:    Haskell2010
   other-modules:       ParseUtils
 
@@ -27,7 +29,7 @@ executable rules-engine-exe
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
   build-depends:       base
                      , rules-engine
-                     , parsec
+                     , containers
   default-language:    Haskell2010
 
 test-suite rules-engine-test
