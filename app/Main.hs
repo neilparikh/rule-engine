@@ -25,7 +25,7 @@ main = do
     case parseRule input of
         Right rule -> do
             print rule
-            if validateRule ["Show", "Hide"] ["age", "foo", "count"] rule
+            if validateRule (M.keys actions) (M.keys vars) rule
                 then runRule rule vars actions 1
                 else putStrLn "invalid rule"
 
