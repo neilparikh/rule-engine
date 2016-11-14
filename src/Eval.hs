@@ -5,11 +5,7 @@ import Control.Applicative (liftA2)
 
 import Types
 
-runRule :: Rule ->
-        M.Map String Int -> -- Mapping from variables to values
-        M.Map Action (a -> IO ()) -> -- Mapping from actions to functions
-        a -> -- context value
-        IO ()
+runRule :: Rule -> M.Map String Int -> M.Map Action (a -> IO ()) -> a -> IO ()
 runRule (Rule condition action) varsMap actionsMap context =
     case evalCond condition varsMap of
         Just True -> case M.lookup action actionsMap of
