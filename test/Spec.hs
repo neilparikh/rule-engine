@@ -1,5 +1,3 @@
-{-# Language OverloadedStrings #-}
-
 import Data.Either (isRight)
 
 import Test.Framework
