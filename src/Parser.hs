@@ -52,8 +52,8 @@ predicateParser =     constString "==" Eq
                   <|> constString "!=" NotEq
 
 exprParser :: Parser Expr
-exprParser =     fmap Val intParser
-             <|> fmap Var (many1 letter)
+exprParser =     Val <$> intParser
+             <|> Var <$> (many1 letter)
 
 intParser :: Parser Int
 intParser = do
