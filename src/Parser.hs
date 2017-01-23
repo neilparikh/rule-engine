@@ -14,9 +14,7 @@ applyParser parser = runParser parser () ""
 ruleParser :: Parser Rule
 ruleParser = do
     action <- actionParser
-    spaces
-    string "if"
-    spaces
+    wrapWithSpaces $ string "if"
     condition <- conditionParser
     return $ Rule condition action
 
@@ -31,9 +29,7 @@ conditionParser =     try compoundParser
 compoundParser :: Parser Condition
 compoundParser = do
     e1 <- parens conditionParser
-    spaces
-    conjunction <- conjunctionParser
-    spaces
+    conjunction <- wrapWithSpaces conjunctionParser
     e2 <- parens conditionParser
     return $ Compound conjunction e1 e2
 
@@ -41,9 +37,7 @@ compoundParser = do
 compareParser :: Parser Condition
 compareParser = do
     e1 <- exprParser
-    spaces
-    predicate <- predicateParser
-    spaces
+    predicate <- wrapWithSpaces predicateParser
     e2 <- exprParser
     return $ Compare predicate e1 e2
 
