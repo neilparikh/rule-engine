@@ -36,6 +36,7 @@ test-suite rules-engine-test
   type:                exitcode-stdio-1.0
   hs-source-dirs:      test
   main-is:             Spec.hs
+  other-modules:       Arbitrary
   build-depends:       base
                      , rules-engine
                      , test-framework
