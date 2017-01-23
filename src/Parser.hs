@@ -12,11 +12,7 @@ applyParser parser = runParser parser () ""
 
 -- parses <action> if <rule>
 ruleParser :: Parser Rule
-ruleParser = do
-    action <- actionParser
-    wrapWithSpaces $ string "if"
-    condition <- conditionParser
-    return $ Rule condition action
+ruleParser = flip Rule <$> actionParser <* wrapWithSpaces (string "if") <*> conditionParser
 
 actionParser :: Parser Action
 actionParser = Action <$> many1 letter
@@ -27,11 +23,10 @@ conditionParser =     try compoundParser
 
 -- parses <cond> (or|and) <cond>
 compoundParser :: Parser Condition
-compoundParser = do
-    e1 <- parens conditionParser
-    conjunction <- wrapWithSpaces conjunctionParser
-    e2 <- parens conditionParser
-    return $ Compound conjunction e1 e2
+compoundParser = compoundFlipped <$> condWithParens <*> wrapWithSpaces (conjunctionParser) <*> condWithParens
+    where
+    compoundFlipped a b c = Compound b a c
+    condWithParens = parens conditionParser
 
 -- parses <expr> (==|!=) <expr>
 compareParser :: Parser Condition
