@@ -23,7 +23,7 @@ conditionParser =     try compoundParser
 
 -- parses <cond> (or|and) <cond>
 compoundParser :: Parser Condition
-compoundParser = compoundFlipped <$> condWithParens <*> wrapWithSpaces (conjunctionParser) <*> condWithParens
+compoundParser = compoundFlipped <$> condWithParens <*> wrapWithSpaces conjunctionParser <*> condWithParens
     where
     compoundFlipped a b c = Compound b a c
     condWithParens = parens conditionParser
