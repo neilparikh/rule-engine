@@ -40,7 +40,7 @@ predicateParser =     constString "==" Eq
 
 exprParser :: Parser Expr
 exprParser =     Val <$> intParser
-             <|> Var <$> (many1 letter)
+             <|> Var <$> many1 letter
 
 intParser :: Parser Int
 intParser = do
