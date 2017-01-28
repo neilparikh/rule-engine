@@ -27,7 +27,7 @@ evalCond (Compound conj cond1 cond2) varsMap = liftA2 (conjunctionToFunction con
     where
     a = evalCond cond1 varsMap
     b = evalCond cond2 varsMap
-evalCond (Compare pred e1 e2) varsMap = (predicateToFunction pred) <$> a <*> b
+evalCond (Compare pred e1 e2) varsMap = predicateToFunction pred <$> a <*> b
     where
     a = evalExpr e1 varsMap
     b = evalExpr e2 varsMap
