@@ -30,11 +30,9 @@ compoundParser = compoundFlipped <$> condWithParens <*> wrapWithSpaces (conjunct
 
 -- parses <expr> (==|!=) <expr>
 compareParser :: Parser Condition
-compareParser = do
-    e1 <- exprParser
-    predicate <- wrapWithSpaces predicateParser
-    e2 <- exprParser
-    return $ Compare predicate e1 e2
+compareParser = compareFlipped <$> exprParser <*> wrapWithSpaces predicateParser <*> exprParser
+    where
+    compareFlipped a b c = Compare b a c
 
 predicateParser :: Parser Predicate
 predicateParser =     constString "==" Eq
