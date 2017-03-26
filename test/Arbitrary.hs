@@ -11,10 +11,13 @@ instance Arbitrary Action where
     arbitrary = Action <$> (listOf1 . choose $ ('A', 'Z'))
 
 instance Arbitrary Condition where
-    arbitrary = oneof [
-        Compound <$> arbitrary <*> arbitrary <*> arbitrary,
-        Compare <$> arbitrary <*> arbitrary <*> arbitrary
-        ]
+    arbitrary = sized arbitrary'
+        where
+        arbitrary' 0 = Compare <$> arbitrary <*> arbitrary <*> arbitrary
+        arbitrary' n = oneof [
+            Compound <$> arbitrary <*> arbitrary' (n-1) <*> arbitrary' (n-1),
+            Compare <$> arbitrary <*> arbitrary <*> arbitrary
+            ]
 
 instance Arbitrary Expr where
     arbitrary = oneof [
